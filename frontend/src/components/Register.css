@@ -1,0 +1,262 @@
+.register-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e0f2fe 0%, #b3e5fc 50%, #81d4fa 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+.register-container {
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+
+.register-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.register-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+
+.register-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.register-header h2 {
+  color: #1e3a8a;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.5px;
+}
+
+.register-header p {
+  color: #64748b;
+  font-size: 1rem;
+  margin: 0;
+  font-weight: 400;
+}
+
+
+.error-message {
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  color: #dc2626;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #fca5a5;
+  animation: slideIn 0.3s ease;
+}
+
+.error-icon {
+  font-size: 1.1rem;
+}
+
+
+.success-message {
+  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+  color: #16a34a;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #86efac;
+  animation: slideIn 0.3s ease;
+}
+
+.success-icon {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+
+.register-form {
+  margin-bottom: 25px;
+}
+
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  color: #374151;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  letter-spacing: 0.025em;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  transform: translateY(-1px);
+}
+
+.input-group input:disabled {
+  background-color: #f9fafb;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.input-group input::placeholder {
+  color: #9ca3af;
+}
+
+
+.password-hint {
+  color: #6b7280;
+  font-size: 0.8rem;
+  margin-top: 4px;
+  font-style: italic;
+}
+
+
+.register-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.025em;
+  margin-top: 10px;
+}
+
+.register-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+}
+
+.register-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.register-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+
+.register-footer {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.register-footer p {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.register-footer a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.register-footer a:hover {
+  color: #1e40af;
+  text-decoration: underline;
+}
+
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.register-btn:disabled {
+  animation: pulse 1.5s infinite;
+}
+
+
+@media (max-width: 480px) {
+  .register-page {
+    padding: 15px;
+  }
+  
+  .register-card {
+    padding: 30px 25px;
+  }
+  
+  .register-header h2 {
+    font-size: 1.75rem;
+  }
+  
+  .input-group input,
+  .register-btn {
+    padding: 12px 14px;
+  }
+}
+
+
+.input-group input:valid {
+  border-color: #10b981;
+}
+
+.input-group input:invalid:not(:placeholder-shown) {
+  border-color: #ef4444;
+}
+
+
+.input-group:focus-within label {
+  color: #3b82f6;
+}
