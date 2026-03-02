@@ -3,6 +3,7 @@ const express = require('express');
 const router  = express.Router();
 const jwt     = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
+const { JWT_SECRET } = require('../config/auth');
 
 const userController = require('../controllers/userController');
 const User           = require('../models/userModel');
@@ -49,7 +50,7 @@ router.post('/auth/google', async (req, res) => {
     
     const token = jwt.sign(
       { uid: user._id },
-      process.env.JWT_SECRET,
+      JWT_SECRET,
       { expiresIn: '2h' }
     );
 

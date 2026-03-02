@@ -1,8 +1,9 @@
 const jwt  = require('jsonwebtoken');
 const User = require('../models/userModel');
+const { JWT_SECRET } = require('../config/auth');
 
 const setJwtCookie = (res, userId) => {
-  const token = jwt.sign({ uid: userId }, process.env.JWT_SECRET, {
+  const token = jwt.sign({ uid: userId }, JWT_SECRET, {
     expiresIn: '2h',
   });
 
