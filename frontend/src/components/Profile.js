@@ -1,4 +1,3 @@
-// src/components/Profile.js
 import { useContext } from 'react';
 import { UserContext } from '../App';
 import { Navigate } from 'react-router-dom';

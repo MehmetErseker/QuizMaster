@@ -1,4 +1,3 @@
-// src/components/Login.js
 import { useState, useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 import axios from 'axios';
@@ -77,7 +76,6 @@ function Login() {
             </div>
           )}
 
-          {/* Local form */}
           <form onSubmit={handleSubmit} className="login-form">
             <div className="input-group">
               <label htmlFor="username">Username</label>
@@ -120,7 +118,6 @@ function Login() {
             <span>or</span>
           </div>
 
-          {/* Google button */}
           <div className="google-login-container">
             <GoogleLogin
               type="standard"

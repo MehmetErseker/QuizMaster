@@ -1,4 +1,3 @@
-// src/components/MainPage.js
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './MainPage.css';

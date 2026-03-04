@@ -1,4 +1,3 @@
-// src/components/Header.js
 import { useContext } from 'react';
 import { UserContext } from '../App';
 import { Link } from 'react-router-dom';
