@@ -1,27 +1,25 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { UserContext } from '../App';
 import './QuizHome.css';
 
 function QuizHome() {
-  const [loading, setLoading]   = useState(false);
-  const [error,   setError]     = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
   const startQuiz = async () => {
     setLoading(true);
     setError('');
+
     try {
-      const res = await fetch('http://localhost:3001/quiz/start', {
-        credentials: 'include',
-      });
-      if (!res.ok) throw new Error('Cannot start quiz');
-      const questions = await res.json();
-      sessionStorage.setItem('currentQuiz', JSON.stringify(questions));
+      const { data } = await axios.get('/quiz/start');
+      sessionStorage.setItem('currentQuiz', JSON.stringify(data));
       navigate('/quiz');
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.error || 'Cannot start quiz');
     } finally {
       setLoading(false);
     }
@@ -32,40 +30,23 @@ function QuizHome() {
       <div className="quiz-home-container">
         <div className="quiz-home-card">
           <div className="welcome-header">
-            <div className="welcome-icon">🎯</div>
-            <h1 className="welcome-title">
-              Welcome{user ? `, ${user.username}` : ''}!
-            </h1>
-            <p className="welcome-subtitle">
-              Click below to start a 10-question quiz.
-            </p>
+            <h1 className="welcome-title">Welcome{user ? `, ${user.username}` : ''}!</h1>
+            <p className="welcome-subtitle">Click below to start a 10-question quiz.</p>
           </div>
-          
+
           <div className="quiz-actions">
-            <button 
-              className="start-quiz-btn" 
-              onClick={startQuiz} 
-              disabled={loading}
-            >
+            <button className="start-quiz-btn" onClick={startQuiz} disabled={loading}>
               {loading ? (
                 <>
                   <div className="btn-spinner"></div>
-                  Preparing…
+                  Preparing...
                 </>
               ) : (
-                <>
-                  <span className="btn-icon">🚀</span>
-                  Start Quiz
-                </>
+                'Start Quiz'
               )}
             </button>
-            
-            {error && (
-              <div className="error-message">
-                <span className="error-icon">⚠️</span>
-                {error}
-              </div>
-            )}
+
+            {error && <div className="error-message">{error}</div>}
           </div>
         </div>
       </div>

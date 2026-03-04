@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 import './History.css';
 
 function History() {
@@ -6,14 +7,16 @@ function History() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:3001/quiz/history', { credentials: 'include' })
-      .then((res) => res.json())
-      .then((data) => {
-        setRows(data);
-        setLoading(false);
+    axios
+      .get('/quiz/history')
+      .then(({ data }) => {
+        setRows(Array.isArray(data) ? data : []);
       })
       .catch((error) => {
         console.error(error);
+        setRows([]);
+      })
+      .finally(() => {
         setLoading(false);
       });
   }, []);
@@ -41,7 +44,6 @@ function History() {
 
         {rows.length === 0 ? (
           <div className="empty-state">
-            <div className="empty-icon">📊</div>
             <h3>No quiz history yet</h3>
             <p>Start taking quizzes to see your results here!</p>
           </div>
@@ -56,30 +58,27 @@ function History() {
                     <span className="score-label">points</span>
                   </div>
                 </div>
-                
+
                 <div className="card-content">
                   <div className="info-row">
                     <div className="info-item">
-                      <span className="info-icon">👤</span>
                       <span className="info-label">User</span>
                       <span className="info-value">{record.userId?.username || 'Anonymous'}</span>
                     </div>
-                    
+
                     <div className="info-item">
-                      <span className="info-icon">📅</span>
                       <span className="info-label">Date</span>
                       <span className="info-value">
                         {new Date(record.createdAt).toLocaleDateString()}
                       </span>
                     </div>
-                    
+
                     <div className="info-item">
-                      <span className="info-icon">⏰</span>
                       <span className="info-label">Time</span>
                       <span className="info-value">
                         {new Date(record.createdAt).toLocaleTimeString([], {
                           hour: '2-digit',
-                          minute: '2-digit'
+                          minute: '2-digit',
                         })}
                       </span>
                     </div>

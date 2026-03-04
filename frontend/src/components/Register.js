@@ -1,13 +1,14 @@
 import { useState, useContext } from 'react';
+import { Navigate, Link } from 'react-router-dom';
+import axios from 'axios';
 import { UserContext } from '../App';
-import { Navigate } from 'react-router-dom';
 import './Register.css';
 
 function Register() {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
-    password: ''
+    password: '',
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -17,10 +18,12 @@ function Register() {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
-    
-    if (error) setError('');
+
+    if (error) {
+      setError('');
+    }
   };
 
   const validateForm = () => {
@@ -51,25 +54,17 @@ function Register() {
     setIsLoading(true);
 
     try {
-      const res = await fetch('http://localhost:3001/users/register', {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-
-      const data = await res.json();
-      
-      if (data._id) {
+      const { data } = await axios.post('/users/register', formData);
+      if (data?._id) {
         setSuccessMessage('Account created successfully! Redirecting...');
         setTimeout(() => {
           userContext.setUserContext(data);
         }, 1500);
       } else {
-        setError(data.message || 'Registration failed');
+        setError('Registration failed');
       }
     } catch (err) {
-      setError('Registration failed. Please try again.');
+      setError(err.response?.data?.error?.message || 'Registration failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -88,19 +83,9 @@ function Register() {
             <p>Join QuizMaster and start your learning journey</p>
           </div>
 
-          {error && (
-            <div className="error-message">
-              <span className="error-icon">⚠</span>
-              {error}
-            </div>
-          )}
+          {error && <div className="error-message">{error}</div>}
 
-          {successMessage && (
-            <div className="success-message">
-              <span className="success-icon">✓</span>
-              {successMessage}
-            </div>
-          )}
+          {successMessage && <div className="success-message">{successMessage}</div>}
 
           <form onSubmit={handleSubmit} className="register-form">
             <div className="input-group">
@@ -145,22 +130,18 @@ function Register() {
                 disabled={isLoading}
                 minLength="6"
               />
-              <div className="password-hint">
-                Password must be at least 6 characters long
-              </div>
+              <div className="password-hint">Password must be at least 6 characters long</div>
             </div>
 
-            <button 
-              type="submit" 
-              className="register-btn"
-              disabled={isLoading}
-            >
+            <button type="submit" className="register-btn" disabled={isLoading}>
               {isLoading ? 'Creating Account...' : 'Create Account'}
             </button>
           </form>
 
           <div className="register-footer">
-            <p>Already have an account? <a href="/login">Sign in here</a></p>
+            <p>
+              Already have an account? <Link to="/login">Sign in here</Link>
+            </p>
           </div>
         </div>
       </div>

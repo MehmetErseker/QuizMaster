@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { GoogleLogin } from '@react-oauth/google';
 import { UserContext } from '../App';
@@ -8,18 +8,16 @@ import './Login.css';
 function Login() {
   const { user, setUserContext } = useContext(UserContext);
 
-  
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
-    
+
     try {
       const { data } = await axios.post('/users/login', { username, password });
       if (data && data._id) {
@@ -30,22 +28,18 @@ function Login() {
     } catch (err) {
       setUsername('');
       setPassword('');
-      setError(err.response?.data?.msg || 'Invalid username or password');
+      setError(err.response?.data?.error?.message || 'Invalid username or password');
     } finally {
       setIsLoading(false);
     }
   };
 
-  
   const handleGoogleSuccess = async ({ credential }) => {
     setError('');
     setIsLoading(true);
-    
-    try {
-      
-      await axios.post('/users/auth/google', { credential });
 
-      
+    try {
+      await axios.post('/users/auth/google', { credential });
       const { data } = await axios.get('/users/me');
       setUserContext(data);
     } catch (err) {
@@ -56,10 +50,10 @@ function Login() {
     }
   };
 
-  
-  if (user) return <Navigate replace to="/" />;
+  if (user) {
+    return <Navigate replace to="/" />;
+  }
 
-  
   return (
     <div className="login-page">
       <div className="login-container">
@@ -69,12 +63,7 @@ function Login() {
             <p>Please sign in to your account</p>
           </div>
 
-          {error && (
-            <div className="error-message">
-              <span className="error-icon">⚠</span>
-              {error}
-            </div>
-          )}
+          {error && <div className="error-message">{error}</div>}
 
           <form onSubmit={handleSubmit} className="login-form">
             <div className="input-group">
@@ -105,11 +94,7 @@ function Login() {
               />
             </div>
 
-            <button 
-              type="submit" 
-              className="login-btn"
-              disabled={isLoading}
-            >
+            <button type="submit" className="login-btn" disabled={isLoading}>
               {isLoading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
@@ -127,12 +112,13 @@ function Login() {
               text="signin_with"
               onSuccess={handleGoogleSuccess}
               onError={() => setError('Google login aborted')}
-              disabled={isLoading}
             />
           </div>
 
           <div className="login-footer">
-            <p>Don't have an account? <a href="/register">Sign up here</a></p>
+            <p>
+              Don't have an account? <Link to="/register">Sign up here</Link>
+            </p>
           </div>
         </div>
       </div>

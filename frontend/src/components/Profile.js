@@ -1,6 +1,6 @@
 import { useContext } from 'react';
-import { UserContext } from '../App';
 import { Navigate } from 'react-router-dom';
+import { UserContext } from '../App';
 import './Profile.css';
 
 function Profile() {
@@ -11,11 +11,13 @@ function Profile() {
   }
 
   const { user } = userContext;
-  const joinDate = user.createdAt ? new Date(user.createdAt).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  }) : 'Not available';
+  const joinDate = user.createdAt
+    ? new Date(user.createdAt).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    : 'Not available';
 
   const getInitials = (username) => {
     return username ? username.substring(0, 2).toUpperCase() : 'U';
@@ -28,16 +30,14 @@ function Profile() {
           <div className="profile-header">
             <div className="profile-avatar">
               {user.avatar ? (
-                <img 
-                  src={user.avatar} 
-                  alt="User Avatar" 
+                <img
+                  src={user.avatar}
+                  alt="User Avatar"
                   className="avatar-image"
                   referrerPolicy="no-referrer"
                 />
               ) : (
-                <div className="avatar-placeholder">
-                  {getInitials(user.username)}
-                </div>
+                <div className="avatar-placeholder">{getInitials(user.username)}</div>
               )}
             </div>
             <div className="profile-title">
@@ -49,38 +49,26 @@ function Profile() {
           <div className="profile-content">
             <div className="info-section">
               <h2>Account Information</h2>
-              
+
               <div className="info-grid">
                 <div className="info-item">
-                  <div className="info-label">
-                    <span className="info-icon">👤</span>
-                    Username
-                  </div>
+                  <div className="info-label">Username</div>
                   <div className="info-value">{user.username}</div>
                 </div>
 
                 <div className="info-item">
-                  <div className="info-label">
-                    <span className="info-icon">✉️</span>
-                    Email Address
-                  </div>
+                  <div className="info-label">Email Address</div>
                   <div className="info-value">{user.email}</div>
                 </div>
 
                 <div className="info-item">
-                  <div className="info-label">
-                    <span className="info-icon">📅</span>
-                    Member Since
-                  </div>
+                  <div className="info-label">Member Since</div>
                   <div className="info-value">{joinDate}</div>
                 </div>
 
                 {user.provider && (
                   <div className="info-item">
-                    <div className="info-label">
-                      <span className="info-icon">🔐</span>
-                      Login Method
-                    </div>
+                    <div className="info-label">Login Method</div>
                     <div className="info-value">
                       <span className="provider-badge">
                         {user.provider === 'google' ? 'Google Account' : 'Email & Password'}

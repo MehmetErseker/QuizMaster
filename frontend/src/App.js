@@ -61,7 +61,6 @@ function App() {
               <Route path="/quiz-result"  element={user ? <QuizResult />   : <Navigate to="/login" />} />
               <Route path="/leaderboard"  element={<Leaderboard />} />
               <Route path="/history"      element={user ? <History /> : <Navigate to="/login" />} />
-              <Route path="/main-page"    element={<MainPage />} />
             </Routes>
           </div>
         </BrowserRouter>

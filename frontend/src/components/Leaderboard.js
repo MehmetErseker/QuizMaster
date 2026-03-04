@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 import './Leaderboard.css';
 
 function Leaderboard() {
@@ -6,33 +7,30 @@ function Leaderboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:3001/quiz/leaderboard')
-      .then((res) => res.json())
-      .then((data) => {
-        setRows(data);
-        setLoading(false);
+    axios
+      .get('/quiz/leaderboard')
+      .then(({ data }) => {
+        setRows(Array.isArray(data) ? data : []);
       })
       .catch((error) => {
         console.error(error);
+        setRows([]);
+      })
+      .finally(() => {
         setLoading(false);
       });
   }, []);
 
-  const getRankIcon = (position) => {
-    switch (position) {
-      case 1: return '👑';
-      case 2: return '🥈';
-      case 3: return '🥉';
-      default: return '🏅';
-    }
-  };
-
   const getRankClass = (position) => {
     switch (position) {
-      case 1: return 'rank-gold';
-      case 2: return 'rank-silver';
-      case 3: return 'rank-bronze';
-      default: return 'rank-default';
+      case 1:
+        return 'rank-gold';
+      case 2:
+        return 'rank-silver';
+      case 3:
+        return 'rank-bronze';
+      default:
+        return 'rank-default';
     }
   };
 
@@ -53,13 +51,12 @@ function Leaderboard() {
     <div className="leaderboard-page">
       <div className="leaderboard-container">
         <div className="leaderboard-header">
-          <h1>🏆 Leaderboard</h1>
+          <h1>Leaderboard</h1>
           <p>Top 10 quiz performers of all time</p>
         </div>
 
         {rows.length === 0 ? (
           <div className="empty-state">
-            <div className="empty-icon">🏆</div>
             <h3>No scores yet</h3>
             <p>Be the first to appear on the leaderboard!</p>
           </div>
@@ -68,15 +65,14 @@ function Leaderboard() {
             {rows.map((record, index) => {
               const position = index + 1;
               return (
-                <div 
-                  key={record._id} 
+                <div
+                  key={record._id}
                   className={`leaderboard-item ${getRankClass(position)}`}
                 >
                   <div className="rank-section">
                     <div className="rank-number">#{position}</div>
-                    <div className="rank-icon">{getRankIcon(position)}</div>
                   </div>
-                  
+
                   <div className="player-info">
                     <div className="player-name">
                       {record.userId?.username || 'Anonymous'}
@@ -85,15 +81,13 @@ function Leaderboard() {
                       {new Date(record.createdAt).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'short',
-                        day: 'numeric'
+                        day: 'numeric',
                       })}
                     </div>
                   </div>
-                  
+
                   <div className="score-section">
-                    <div className="score-value">
-                      {record.totalScore.toFixed(1)}
-                    </div>
+                    <div className="score-value">{record.totalScore.toFixed(1)}</div>
                     <div className="score-label">points</div>
                   </div>
                 </div>
